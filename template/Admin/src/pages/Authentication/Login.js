@@ -15,6 +15,7 @@ import { login } from "../../store/auth/login/actions"
 
 // import images
 import logoSm from "../../assets/images/logo-sm.png";
+import { Redirect } from "react-router-dom";
 
 
 const required = (value) => {
@@ -60,17 +61,13 @@ const email = (value) => {
     setLoading(true);
     form.current.validateAll();
       dispatch(login(username, password))
-        .then(() => {
-          props.history.push("/Dashboard"); 
-          window.location.reload();
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-   
   };
 
 
+if(isLoggedIn)
+{
+  <Redirect to="/dashboard" />
+}
 
   return (
     <React.Fragment>

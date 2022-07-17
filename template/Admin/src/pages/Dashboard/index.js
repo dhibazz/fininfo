@@ -58,14 +58,17 @@ const Dashboard = props => {
   
   useEffect(() => {
     if (searchInput) {
-      const filteredOffers = offers.filter((offer, index, offers) => Object.values(offer).filter((offerElement) => { return offerElement.toString().toUpperCase().includes(searchInput.toUpperCase()) }).length ? offer : false )
+      const filteredOffers =
+      offers.filter(
+          (item) => item.emplacement.includes(searchInput)
+        )
+
       setFilteredOffers(filteredOffers)
     } else {
       setFilteredOffers(offers)
     }
   }, [searchInput, offers])
 
-  // console.log({ offers });
 
   return (
     <React.Fragment>

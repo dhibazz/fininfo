@@ -41,17 +41,34 @@ export const register = (username, email, password) => (dispatch) => {
 
 
 export const login = (username, password) => (dispatch) => {
-  return AuthService.login(username, password)
-  .then(
-    (data) => {
-      console.log("data",data)
-      dispatch({
-        type: types.LOGIN_SUCCESS,
-        payload: { user: data },
-      });
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+};
+fetch('http://localhost:8080/api/auth/signin', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      if (data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(data));
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: { user: data },
+        });
+if(data.roles[0]==="ROLE_MODERATOR"){
+  window.location.replace("http://localhost:3000/dashboard");
+}
 
-      return Promise.resolve();
-    },
+if(data.roles[0]==="ROLE_USER"){
+  window.location.replace("http://localhost:3000/pages-timeline");
+}
+
+      }
+
+      return data;
+    }
+    );
     (error) => {
       const message =
         (error.response && error.response.data && error.response.data.message) ||
@@ -69,7 +86,6 @@ export const login = (username, password) => (dispatch) => {
 
       return Promise.reject();
     }
-  );
 };
 
 

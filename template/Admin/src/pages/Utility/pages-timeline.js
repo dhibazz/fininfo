@@ -1,7 +1,8 @@
 //import React from "react"
 import React, { useState, useEffect } from "react";
 import MetaTags from 'react-meta-tags';
-import { Row, Col, Card, CardBody } from "reactstrap"
+import { Row, Col, Card, CardBody,Form,FormGroup,Label,Input  } from "reactstrap"
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from "react-router-dom"
 import axios from "axios";
 
@@ -21,7 +22,9 @@ const PagesTimeline = () => {
 const dispatch = useDispatch();
 const offers = useSelector((state) => state.offers.offers);
 
+const [modal, setModal] = useState(false);
 
+const toggle = () => setModal(!modal);
 
 useEffect(() => {
   dispatch(getOffers());
@@ -32,7 +35,7 @@ useEffect(() => {
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Timeline | Veltrix - Responsive Bootstrap 5 Admin Dashboard</title>
+          <title>Timeline</title>
         </MetaTags>
         <div className="container-fluid">
           {/* Render Breadcrumbs */}
@@ -59,9 +62,10 @@ useEffect(() => {
                           </p>
                           <button
                           type="button"
+                          onClick={toggle}
                           className="btn btn-primary btn-rounded waves-effect waves-light m-t-5"
                         >
-                          See more detail
+                          Apply
                       </button>
                             <div className="date bg-primary">
                               <h4 className="mt-0">{offer.experience}</h4>
@@ -79,9 +83,10 @@ useEffect(() => {
                           <p> {offer.emplacement}</p>
                             <button
                               type="button"
+                              onClick={toggle}
                               className="btn btn-primary btn-rounded waves-effect waves-light m-t-5"
                             >
-                              See more detail
+                              Apply
                           </button>
 
                           <div className="date bg-primary">
@@ -106,6 +111,56 @@ useEffect(() => {
 
         </div>
       </div>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Add </ModalHeader>
+        <ModalBody>
+        <Form inline>
+  <FormGroup className="mb-2 me-sm-2 mb-sm-0">
+    <Label
+      className="me-sm-2"
+      for="poste"
+    >
+      Poste
+    </Label>
+    <Input
+      id="poste"
+      name="poste"
+      type="text"
+    />
+  </FormGroup>
+  <FormGroup className="mb-2 mt-3 me-sm-2 mb-sm-0">
+    <Label
+      className="me-sm-2"
+      for="cv"
+    >
+      Cv
+    </Label>
+    <Input
+      id="cv"
+      name="cv"
+      type="file"
+    />
+  </FormGroup>
+  <FormGroup className="mb-2 me-sm-2 mb-sm-0">
+    <Label
+      className="me-sm-2"
+      for="date"
+    >
+      Date
+    </Label>
+    <Input
+      id="date"
+      name="date"
+      type="date"
+    />
+  </FormGroup>
+</Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary">Submit</Button>{' '}
+          <Button color="secondary" onClick={toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </React.Fragment>
   )
 }
